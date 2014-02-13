@@ -203,7 +203,7 @@ class Page(models.Model):
     """
     This is the class that defines a page of the structure.
     """
-    objects = PageManager()
+    #objects = PageManager()
 
     name = models.CharField(max_length=50, unique=True, help_text=_(u"Identifying page's name."),
                             verbose_name=_(u"Name"))
@@ -283,15 +283,18 @@ class Page(models.Model):
         ordering = ['name']
 
 
+def is_app(path):
+    if os.path.isdir(path) and '__init__.py' in os.listdir(path) and 'settings.py' not in os.listdir(path):
+        return True
+    return False
+
+
 def list_apps():
     """
     It returns a list of application contained in PROJECT_APPS
     """
-    apps = []
-    for app in settings.INSTALLED_APPS:
-        if os.getcwd() in os.path.abspath(sys.modules[app].__file__):
-            apps.append([app.split(".")[-1]] * 2)
-    return apps
+    return [(d.split('.')[-1], d.split('.')[-1]) for d in os.listdir(
+        os.getcwd()) if is_app(u"{}/{}".format(os.getcwd(), d))]
 
 
 class Template(models.Model):
@@ -300,7 +303,7 @@ class Template(models.Model):
     """
     name = models.CharField(max_length=100, help_text=_(u"Set the template's name."), verbose_name=_(u"Name"))
     app_name = models.CharField(max_length=100, help_text=_(u"Set the application's name of the view."),
-                                default=settings.PROJECT_APP_DEFAULT, choices=list_apps(),
+                                choices=list_apps(),
                                 verbose_name=_(u"App name"))
     file_name = models.CharField(max_length=150, help_text=_(u"Set the template's file name."),
                                  verbose_name=_(u"File name"))
@@ -353,7 +356,7 @@ class View(models.Model):
     """
     name = models.CharField(max_length=100, help_text=_(u"Set the view's name."), verbose_name=_(u"Name"))
     app_name = models.CharField(max_length=100, help_text=_(u"Set the application's name of the view."),
-                                default=settings.PROJECT_APP_DEFAULT, choices=list_apps(),
+                                choices=list_apps(),
                                 verbose_name=_(u"App name"))
     func_name = models.CharField(max_length=100, help_text=_(u"Set the view's function name."),
                                  verbose_name=_(u"Func name"))
