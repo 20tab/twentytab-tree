@@ -33,7 +33,6 @@ def getUrlList():
                 check_static_vars add UPY_CONTEXT to page
                 """
                 page.check_static_vars(node)
-                print page.static_vars
                 app_url = url(regex, view, page.static_vars, page.scheme_name)
                 set_to_return.append(app_url)
                 set_url.append(regex_path)

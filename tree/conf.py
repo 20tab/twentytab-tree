@@ -3,7 +3,7 @@ from django.conf import settings
 import os
 
 
-class TabbedConf(AppConf):
+class TreeConf(AppConf):
     STATIC_URL = u'/static/'
     TREE_EDITOR_INCLUDE_ANCESTORS = False
     TREE_EDITOR_OBJECT_PERMISSIONS = False
