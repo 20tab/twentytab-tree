@@ -48,13 +48,14 @@ class TreeConf(AppConf):
         if res and not os.path.exists(u"{}/{}".format(os.getcwd(), 'templates')):
             os.mkdir(u"{}/{}".format(os.getcwd(), 'templates'))
         if res:
-            list_dirs = ['templates']
+            list_dirs = ['templates', os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')]
             list_dirs.extend(
                 list([u"templates/{}".format(tdir) for tdir in os.listdir(u"{}/{}".format(os.getcwd(), 'templates'))])
             )
-            if getattr(settings, 'TEMPLATE_DIRS', None):
+            if hasattr(settings, 'TEMPLATE_DIRS'):
                 t_dirs = list(getattr(settings, 'TEMPLATE_DIRS', []))
-                self._meta.holder.TEMPLATE_DIRS = t_dirs.extend(list_dirs)
+                t_dirs.extend(list_dirs)
+                self._meta.holder.TEMPLATE_DIRS = t_dirs
             else:
                 self._meta.holder.TEMPLATE_DIRS = list_dirs
         return res
@@ -93,7 +94,7 @@ class TreeConf(AppConf):
         if not getattr(settings, 'TEMPLATE_CONTEXT_PROCESSORS', None):
             self._meta.holder.TEMPLATE_CONTEXT_PROCESSORS = ['tree.template_context.context_processors.set_meta']
         else:
-            middleware = list(getattr(settings, 'TEMPLATE_CONTEXT_PROCESSORS'))
+            middleware = list(getattr(settings, 'TEMPLATE_CONTEXT_PROCESSORS', []))
             middleware.append('tree.template_context.context_processors.set_meta')
             self._meta.holder.TEMPLATE_CONTEXT_PROCESSORS = middleware
         return self.configured_data
