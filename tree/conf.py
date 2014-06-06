@@ -53,7 +53,10 @@ class TreeConf(AppConf):
                 list([u"templates/{}".format(tdir) for tdir in os.listdir(u"{}/{}".format(os.getcwd(), 'templates'))])
             )
             if getattr(settings, 'TEMPLATE_DIRS', None):
-                self._meta.holder.TEMPLATE_DIRS = getattr(settings, 'TEMPLATE_DIRS').extends(list_dirs)
+                t_dirs = getattr(settings, 'TEMPLATE_DIRS', [])
+                if t_dirs:
+                    t_dirs = list(t_dirs)
+                self._meta.holder.TEMPLATE_DIRS = t_dirs.extends(list_dirs)
             else:
                 self._meta.holder.TEMPLATE_DIRS = list_dirs
         return res
