@@ -53,10 +53,8 @@ class TreeConf(AppConf):
                 list([u"templates/{}".format(tdir) for tdir in os.listdir(u"{}/{}".format(os.getcwd(), 'templates'))])
             )
             if getattr(settings, 'TEMPLATE_DIRS', None):
-                t_dirs = getattr(settings, 'TEMPLATE_DIRS', [])
-                if t_dirs:
-                    t_dirs = list(t_dirs)
-                self._meta.holder.TEMPLATE_DIRS = t_dirs.extends(list_dirs)
+                t_dirs = list(getattr(settings, 'TEMPLATE_DIRS', []))
+                self._meta.holder.TEMPLATE_DIRS = t_dirs.extend(list_dirs)
             else:
                 self._meta.holder.TEMPLATE_DIRS = list_dirs
         return res
@@ -89,13 +87,13 @@ class TreeConf(AppConf):
         if not getattr(settings, 'MIDDLEWARE_CLASSES', None):
             self._meta.holder.MIDDLEWARE_CLASSES = ['tree.middleware.upy_context.SetUpyContextMiddleware']
         else:
-            middleware = getattr(settings, 'MIDDLEWARE_CLASSES')
+            middleware = list(getattr(settings, 'MIDDLEWARE_CLASSES', []))
             middleware.append('tree.middleware.upy_context.SetUpyContextMiddleware')
             self._meta.holder.MIDDLEWARE_CLASSES = middleware
         if not getattr(settings, 'TEMPLATE_CONTEXT_PROCESSORS', None):
             self._meta.holder.TEMPLATE_CONTEXT_PROCESSORS = ['tree.template_context.context_processors.set_meta']
         else:
-            middleware = getattr(settings, 'TEMPLATE_CONTEXT_PROCESSORS')
+            middleware = list(getattr(settings, 'TEMPLATE_CONTEXT_PROCESSORS'))
             middleware.append('tree.template_context.context_processors.set_meta')
             self._meta.holder.TEMPLATE_CONTEXT_PROCESSORS = middleware
         return self.configured_data
