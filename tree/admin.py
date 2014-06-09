@@ -2,7 +2,7 @@ from django.contrib import admin
 from django import forms
 from tree.models import Node, Page, View, Template, Robot
 from django.utils.translation import ugettext_lazy as _
-from tree.tree_admin import TreeEditor
+from treeeditor.admin import TreeEditor
 from django.conf import settings
 from django.template.loader import render_to_string
 import re

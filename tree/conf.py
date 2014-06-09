@@ -5,8 +5,6 @@ import os
 
 class TreeConf(AppConf):
     STATIC_URL = u'/static/'
-    TREE_EDITOR_INCLUDE_ANCESTORS = False
-    TREE_EDITOR_OBJECT_PERMISSIONS = False
     USE_GLOBAL_TEMPLATES_DIR = True
     DISALLOW_ALL_ROBOTS = True
     JQUERY_LIB = u"{}{}".format(
@@ -27,18 +25,6 @@ class TreeConf(AppConf):
             self._meta.holder.STATIC_URL = value
             return value
         return getattr(settings, 'STATIC_URL')
-
-    def configure_tree_editor_include_ancestors(self, value):
-        if not getattr(settings, 'TREE_EDITOR_INCLUDE_ANCESTORS', None):
-            self._meta.holder.TREE_EDITOR_INCLUDE_ANCESTORS = value
-            return value
-        return getattr(settings, 'TREE_EDITOR_INCLUDE_ANCESTORS')
-
-    def configure_tree_editor_object_permission(self, value):
-        if not getattr(settings, 'TREE_EDITOR_OBJECT_PERMISSIONS', None):
-            self._meta.holder.TREE_EDITOR_OBJECT_PERMISSIONS = value
-            return value
-        return getattr(settings, 'TREE_EDITOR_OBJECT_PERMISSIONS')
 
     def configure_use_global_templates_dir(self, value):
         res = getattr(settings, 'USE_GLOBAL_TEMPLATES_DIR', None)
